@@ -1,0 +1,23 @@
+[default]
+DEBUG = false
+SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
+SECRET_KEY = "jadkfbsdkjbfbh"
+SQLALCHEMY_TRACK_MODIFICATIONS = false
+EXTENSIONS = [
+    "estacao.ext.database:init_app",
+    "estacao.ext.commands:init_app"
+]
+
+[development]
+EXTENSIONS = [
+    "dynaconf_merge_unique"  # to reuse extensions list from [default]
+]
+
+[testing]
+EXTENSIONS = [
+    "dynaconf_merge_unique"  # to reuse extensions list from [default]
+]
+SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'
+
+[production]
+SQLALCHEMY_DATABASE_URI = 'sqlite:///production.db'

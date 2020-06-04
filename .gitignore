@@ -1,0 +1,7 @@
+.env
+.estapi
+.vscode
+__pycache__
+# Ignore dynaconf secret files
+.secrets.*
+*.db
