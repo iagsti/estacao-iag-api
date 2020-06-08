@@ -1,5 +1,5 @@
 from estacao.ext.database import db
-from estacao.models import Consolidado
+from estacao.models import Consolidado, Pressao
 from datetime import date
 
 
@@ -26,6 +26,12 @@ def populate_db():
     return Consolidado.query.all()
 
 
+def populate_pressao():
+    pressao = Pressao(data=date.fromisoformat('2020-02-01'), pressao=192.5)
+    pressao.save()
+    return Pressao.query.all()
+
+
 def init_app(app):
-    for command in [create_db, drop_db]:
+    for command in [create_db, drop_db, populate_db, populate_pressao]:
         app.cli.add_command(app.cli.command()(command))

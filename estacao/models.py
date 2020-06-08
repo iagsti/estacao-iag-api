@@ -32,3 +32,12 @@ class Consolidado(db.Model, SerializerMixin):
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+
+class Pressao(db.Model, SerializerMixin):
+    data = db.Column(db.DateTime, primary_key=True)
+    pressao = db.Column(db.Float)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
