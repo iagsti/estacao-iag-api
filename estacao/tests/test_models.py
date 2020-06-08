@@ -8,7 +8,6 @@ from estacao.models import Consolidado
 
 class ConsolidadoTest(unittest.TestCase):
     def setUp(self):
-        print('consolidado init')
         app = minimal_app(FORCE_ENV_FOR_DYNACONF="testing")
         app.app_context().push()
         database.init_app(app)
@@ -16,7 +15,6 @@ class ConsolidadoTest(unittest.TestCase):
         self.obj = self.make_consolidado()
 
     def tearDown(self):
-        print('consolidado end')
         commands.drop_db()
 
     def test_instance(self):
