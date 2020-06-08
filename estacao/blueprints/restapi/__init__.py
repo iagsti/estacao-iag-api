@@ -10,5 +10,6 @@ api = Api(bp)
 
 
 def init_app(app):
-    api.add_resource(ConsolidadoResource, '/consolidado')
+    urn = '/consolidado/<string:date_from>/<string:date_to>/'
+    api.add_resource(ConsolidadoResource, urn)
     app.register_blueprint(bp)
