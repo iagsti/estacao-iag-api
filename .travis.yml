@@ -2,6 +2,7 @@ language: python
 python:
   - "3.8"
   install: 
+    - cp config/env.example .env
     - pip install -q -r requirements.txt
   script:
     - flask create-db
