@@ -1,7 +1,7 @@
 import pytest
 from estacao.app import create_app, minimal_app
 from estacao.ext.database import db
-from estacao.ext.commands import populate_db
+from estacao.ext.commands import populate_db, populate_pressao
 
 
 @pytest.fixture(scope="session")
@@ -23,3 +23,9 @@ def app():
 def consolidado(app):
     with app.app_context():
         return populate_db()
+
+
+@pytest.fixture(scope="session")
+def pressao(app):
+    with app.app_context():
+        return populate_pressao()

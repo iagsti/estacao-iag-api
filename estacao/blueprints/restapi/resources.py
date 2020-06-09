@@ -2,7 +2,7 @@ from flask import jsonify
 from flask_restful import Resource
 
 
-from estacao.models import Consolidado
+from estacao.models import Consolidado, Pressao
 
 
 class ConsolidadoResource(Resource):
@@ -12,4 +12,14 @@ class ConsolidadoResource(Resource):
         data = query.all()
         return jsonify(
             {"consolidado": [consolidado.to_dict() for consolidado in data]}
+        )
+
+
+class PressaoResource(Resource):
+    def get(self, date_from, date_to):
+        date_interval = Pressao.data.between(date_from, date_to)
+        query = Pressao.query.filter(date_interval)
+        data = query.all()
+        return jsonify(
+            {"pressao": [pressao.to_dict() for pressao in data]}
         )
