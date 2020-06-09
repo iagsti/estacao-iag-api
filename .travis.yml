@@ -7,3 +7,4 @@ python:
   script:
     - flask create-db
     - pytest
+
