@@ -2,7 +2,7 @@ from flask import jsonify
 from flask_restful import Resource
 
 
-from estacao.models import Consolidado, Pressao
+from estacao.models import Consolidado, Pressao, Users
 
 
 class ConsolidadoResource(Resource):
@@ -22,4 +22,13 @@ class PressaoResource(Resource):
         data = query.all()
         return jsonify(
             {"pressao": [pressao.to_dict() for pressao in data]}
+        )
+
+
+class UserResource(Resource):
+    def get(self, login):
+        user = Users.query.filter_by(login=login).first()
+        print(user)
+        return jsonify(
+            {"user": user.to_dict()}
         )
