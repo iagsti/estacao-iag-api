@@ -1,5 +1,6 @@
+from werkzeug.security import generate_password_hash
 from estacao.ext.database import db
-from estacao.models import Consolidado, Pressao
+from estacao.models import Consolidado, Pressao, Users
 from datetime import date
 
 
@@ -32,6 +33,20 @@ def populate_pressao():
     return Pressao.query.all()
 
 
+def populate_users():
+    password_hash = generate_password_hash('12345', method='md5')
+    users = Users(login='login_test', password=password_hash)
+    users.save()
+    return users
+
+
 def init_app(app):
-    for command in [create_db, drop_db, populate_db, populate_pressao]:
+    commands = [
+            create_db,
+            drop_db,
+            populate_db,
+            populate_pressao,
+            populate_users
+    ]
+    for command in commands:
         app.cli.add_command(app.cli.command()(command))
