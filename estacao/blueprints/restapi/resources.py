@@ -28,7 +28,6 @@ class PressaoResource(Resource):
 class UserResource(Resource):
     def get(self, login):
         user = Users.query.filter_by(login=login).first()
-        print(user)
         return jsonify(
             {"user": user.to_dict()}
         )
