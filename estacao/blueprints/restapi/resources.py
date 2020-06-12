@@ -1,4 +1,5 @@
 from flask import jsonify
+from estacao.exceptions import abort, NoContentException
 from flask_restful import Resource
 
 
@@ -27,7 +28,15 @@ class PressaoResource(Resource):
 
 class UserResource(Resource):
     def get(self, login):
-        user = Users.query.filter_by(login=login).first()
-        return jsonify(
-            {"user": user.to_dict()}
-        )
+        try:
+            user = Users.query.filter_by(login=login).first() or abort(204)
+            response = jsonify(
+                {"user": {"id": user.id, "login": user.login}}
+            )
+        except NoContentException:
+            response = jsonify({
+                "user": {},
+                "status": 204,
+                "message": "User not found"
+            })
+        return response
