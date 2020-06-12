@@ -1,5 +1,5 @@
 from flask import jsonify
-from estacao.exceptions import abort, NoContentException
+from estacao.exceptions.nocontent import abort, NoContentException
 from flask_restful import Resource
 
 
