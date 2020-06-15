@@ -41,3 +41,13 @@ class Pressao(db.Model, SerializerMixin):
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+
+class Users(db.Model, SerializerMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    login = db.Column(db.String(20))
+    password = db.Column(db.String(128))
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()

@@ -1,7 +1,8 @@
 import pytest
 from estacao.app import create_app, minimal_app
+from estacao.blueprints.restapi.resources import UserResource
 from estacao.ext.database import db
-from estacao.ext.commands import populate_db, populate_pressao
+from estacao.ext.commands import populate_db, populate_pressao, populate_users
 
 
 @pytest.fixture(scope="session")
@@ -29,3 +30,15 @@ def consolidado(app):
 def pressao(app):
     with app.app_context():
         return populate_pressao()
+
+
+@pytest.fixture(scope='session')
+def users(app):
+    with app.app_context():
+        return populate_users()
+
+
+@pytest.fixture(scope='session')
+def user_resource(app):
+    with app.app_context():
+        return UserResource()
