@@ -25,7 +25,8 @@ def verify_password(username, password):
     return validated
 
 
-class ConsolidadoResource(Resource):
+class ConsolidadoResource(Resource, AuthMixin):
+    @auth.login_required
     def get(self, date_from, date_to):
         date_interval = Consolidado.data.between(date_from, date_to)
         query = Consolidado.query.filter(date_interval)
@@ -35,7 +36,8 @@ class ConsolidadoResource(Resource):
         )
 
 
-class PressaoResource(Resource):
+class PressaoResource(Resource, AuthMixin):
+    @auth.login_required
     def get(self, date_from, date_to):
         date_interval = Pressao.data.between(date_from, date_to)
         query = Pressao.query.filter(date_interval)
