@@ -1,28 +1,10 @@
 from flask import jsonify
 from estacao.exceptions.nocontent import abort, NoContentException
 from flask_restful import Resource
-from flask_httpauth import HTTPBasicAuth
 
-from werkzeug.security import check_password_hash
 
 from estacao.models import Consolidado, Pressao, Users
-from estacao.mixins.authentication_mixin import AuthMixin
-
-
-auth = HTTPBasicAuth()
-
-
-@auth.verify_password
-def verify_password(username, password):
-    user = Users.query.filter_by(login=username).first()
-    if not user:
-        return jsonify({
-            "error": 204,
-            "status": "User not found"
-        })
-    hash_password = user.password
-    validated = check_password_hash(hash_password, password)
-    return validated
+from estacao.mixins.authentication_mixin import AuthMixin, auth
 
 
 class ConsolidadoResource(Resource, AuthMixin):
