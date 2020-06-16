@@ -8,19 +8,21 @@ from estacao.models import Users
 auth = HTTPBasicAuth()
 
 
+def get_user_by_login(username):
+    user = Users.query.filter_by(login=username).first()
+    if not user:
+        return False
+    return user
+
+
+def check_password(hashed_password, plain_password):
+    return check_password_hash(hashed_password, plain_password)
+
+
 class AuthMixin(object):
     @auth.verify_password
-    def verify_password(self, username, password):
-        user = self.get_user_by_login(username)
+    def verify_password(username, password):
+        user = get_user_by_login(username)
         if not user:
             return False
-        return self.check_password(user.password, password)
-
-    def get_user_by_login(self, username):
-        user = Users.query.filter_by(login=username).first()
-        if not user:
-            return False
-        return user
-
-    def check_password(self, hashed_password, plain_password):
-        return check_password_hash(hashed_password, plain_password)
+        return check_password(user.password, password)

@@ -1,4 +1,5 @@
 import pytest
+import base64
 from estacao.app import create_app, minimal_app
 from estacao.blueprints.restapi.resources import UserResource
 from estacao.ext.database import db
@@ -18,6 +19,14 @@ def app():
         db.create_all(app=app)
         yield app
         db.drop_all(app=app)
+
+
+@pytest.fixture(scope="session")
+def auth_header(app):
+    with app.app_context():
+        credentials = base64.b64encode(b'login_test:12345').decode('utf-8')
+        auth_header = {'Authorization': 'Basic {}'.format(credentials)}
+        return auth_header
 
 
 @pytest.fixture(scope="session")
