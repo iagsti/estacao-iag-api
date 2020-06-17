@@ -3,7 +3,7 @@ from estacao.exceptions.nocontent import abort, NoContentException
 from flask_restful import Resource
 
 
-from estacao.models import Consolidado, Pressao, Users
+from estacao.models import Consolidado, Pressao, Users, Umidade
 from estacao.mixins.authentication_mixin import AuthMixin, auth
 
 
@@ -44,3 +44,11 @@ class UserResource(Resource, AuthMixin):
                 "message": "User not found"
             })
         return response
+
+
+class UmidadeResource(Resource):
+    def get(self, date_from, date_to):
+        date_interval = Umidade.data.between(date_from, date_to)
+        query = Umidade.query.filter(date_interval)
+        data = query.all()
+        return jsonify({"umidade": [umidade.to_dict() for umidade in data]})
