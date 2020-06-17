@@ -1,9 +1,10 @@
 import pytest
 import base64
 from estacao.app import create_app, minimal_app
-from estacao.blueprints.restapi.resources import UserResource
+from estacao.blueprints.restapi.resources import UserResource, UmidadeResource
 from estacao.ext.database import db
 from estacao.ext.commands import populate_db, populate_pressao, populate_users
+from estacao.ext.commands import populate_umidade
 
 
 @pytest.fixture(scope="session")
@@ -51,3 +52,15 @@ def users(app):
 def user_resource(app):
     with app.app_context():
         return UserResource()
+
+
+@pytest.fixture(scope='session')
+def umidade(app):
+    with app.app_context():
+        return populate_umidade()
+
+
+@pytest.fixture(scope='session')
+def umidade_resource(app):
+    with app.app_context():
+        return UmidadeResource()

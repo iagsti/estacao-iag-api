@@ -1,4 +1,4 @@
-from estacao.models import Users
+from estacao.models import Users, Umidade
 from estacao.ext.database import db
 from sqlalchemy_serializer import SerializerMixin
 
@@ -36,22 +36,18 @@ class TestUsers:
         users_list = Users.query.all()
         assert len(users_list) == 1
 
-    
-    # def test_get_user_by_login(self, users):
-    #     auth = AuthMixin()
-    #     user = auth.get_user_by_login('login_test')
-    #     assert user.login == 'login_test'
 
-    # def test_get_user_by_login_not_found(self):
-    #     auth = AuthMixin()
-    #     assert not auth.get_user_by_login('not_exists')
+class TestUmidade:
+    def test_umidade_instance(self, umidade):
+        assert isinstance(umidade, Umidade)
+        assert isinstance(umidade, db.Model)
+        assert isinstance(umidade, SerializerMixin)
 
-    # def test_check_password(self, users):
-    #     auth = AuthMixin()
-    #     user = Users.query.filter_by(login='login_test').first()
-    #     assert auth.check_password(user.password, '12345')
+    def test_umidade_has_attributes(self):
+        assert hasattr(Umidade, 'data')
+        assert hasattr(Umidade, 'ur')
+        assert hasattr(Umidade, 'save')
 
-    # def test_check_password_invalid(self):
-    #     auth = AuthMixin()
-    #     user = Users.query.filter_by(login='login_test').first()
-    #     assert not auth.check_password(user.password, 'wrong_password')
+    def test_umidade_populated(self, umidade):
+        umidade = Umidade.query.all()
+        assert len(umidade) == 1
