@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash
 from estacao.ext.database import db
-from estacao.models import Consolidado, Pressao, Users
+from estacao.models import Consolidado, Pressao, Users, Umidade
 from datetime import date
 
 
@@ -40,13 +40,20 @@ def populate_users():
     return users
 
 
+def populate_umidade():
+    umidade = Umidade(data=date.fromisoformat('2020-02-01'), ur=80.4)
+    umidade.save()
+    return umidade
+
+
 def init_app(app):
     commands = [
             create_db,
             drop_db,
             populate_db,
             populate_pressao,
-            populate_users
+            populate_users,
+            populate_umidade
     ]
     for command in commands:
         app.cli.add_command(app.cli.command()(command))

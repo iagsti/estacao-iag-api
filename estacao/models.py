@@ -51,3 +51,12 @@ class Users(db.Model, SerializerMixin):
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+
+class Umidade(db.Model, SerializerMixin):
+    data = db.Column(db.DateTime, primary_key=True)
+    ur = db.Column(db.Float)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
