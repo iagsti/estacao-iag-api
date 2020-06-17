@@ -46,7 +46,8 @@ class UserResource(Resource, AuthMixin):
         return response
 
 
-class UmidadeResource(Resource):
+class UmidadeResource(Resource, AuthMixin):
+    @auth.login_required
     def get(self, date_from, date_to):
         date_interval = Umidade.data.between(date_from, date_to)
         query = Umidade.query.filter(date_interval)
