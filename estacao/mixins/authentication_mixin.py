@@ -2,7 +2,7 @@ from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import check_password_hash
 
 
-from estacao.models import Users
+from models import Users
 
 
 auth = HTTPBasicAuth()

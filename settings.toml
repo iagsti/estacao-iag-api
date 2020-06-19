@@ -4,9 +4,9 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
 SECRET_KEY = "jadkfbsdkjbfbh"
 SQLALCHEMY_TRACK_MODIFICATIONS = false
 EXTENSIONS = [
-    "estacao.ext.database:init_app",
-    "estacao.ext.commands:init_app",
-    "estacao.blueprints.restapi:init_app",
+    "ext.database:init_app",
+    "ext.commands:init_app",
+    "blueprints.restapi:init_app",
 ]
 
 [development]
