@@ -1,6 +1,6 @@
 from flask import Flask
 
-from estacao.ext import configuration
+from ext import configuration
 
 
 def minimal_app(**config):

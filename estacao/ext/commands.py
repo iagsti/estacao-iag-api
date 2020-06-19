@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash
-from estacao.ext.database import db
-from estacao.models import Consolidado, Pressao, Users, Umidade
+from ext.database import db
+from models import Consolidado, Pressao, Users, Umidade
 from datetime import date
 
 
