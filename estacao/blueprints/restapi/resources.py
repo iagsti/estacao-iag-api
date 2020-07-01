@@ -1,10 +1,10 @@
 from flask import jsonify
-from exceptions.nocontent import abort, NoContentException
+from estacao.exceptions.nocontent import abort, NoContentException
 from flask_restful import Resource
 
 
-from models import Consolidado, Pressao, Users, Umidade
-from mixins.authentication_mixin import AuthMixin, auth
+from estacao.models import Consolidado, Pressao, Users, Umidade
+from estacao.mixins.authentication_mixin import AuthMixin, auth
 
 
 class ConsolidadoResource(Resource, AuthMixin):

@@ -1,4 +1,4 @@
-from ext.database import db
+from estacao.ext.database import db
 from sqlalchemy_serializer import SerializerMixin
 
 
