@@ -3,7 +3,8 @@ from sqlalchemy_serializer import SerializerMixin
 
 
 class Consolidado(db.Model, SerializerMixin):
-    data = db.Column(db.DateTime, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    data = db.Column(db.DateTime)
     vis = db.Column(db.Integer)
     tipob = db.Column(db.String)
     qtdb = db.Column(db.Integer)
