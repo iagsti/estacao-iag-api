@@ -72,4 +72,11 @@ class TemperaturaMinResource(Resource, AuthMixin):
 class TemperaturaMaxResource(Resource, AuthMixin):
     @auth.login_required
     def get(self, start_date, end_date):
-        pass
+        session = Consolidado.query.session
+        subquery = session.query(Consolidado.data, Consolidado.tmax).filter(Consolidado.tmax != -99).subquery()
+        tmax = func.max(subquery.columns['tmax'])
+        group = func.date(subquery.columns['data'])
+        date_interval = subquery.columns['data'].between(start_date, end_date)
+        query = session.query(subquery.columns['data'], tmax, subquery.columns['tmax']).group_by(group).having(date_interval)
+        data = query.all()
+        return jsonify({'temp_max': [{'data': str(tempmax[0]), 'temp': tempmax[1]} for tempmax in data]})
