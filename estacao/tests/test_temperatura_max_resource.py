@@ -25,3 +25,12 @@ class TestTemperaturaMaxGet:
     def test_access_not_authorized(self, client):
         response = client.get(TEMPERATURA_MAX_URI)
         assert response.status_code == 401
+
+    def test_temperatura_max_response(self, consolidado, client, auth_header):
+        response = client.get(TEMPERATURA_MAX_URI, headers=auth_header)
+        expected = {
+            'temp_max': [
+                {'data': '2018-01-01 13:48:10', 'temp': 50}
+            ]
+        }
+        assert response.json == expected
