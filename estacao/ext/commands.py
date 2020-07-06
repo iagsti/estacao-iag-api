@@ -1,5 +1,6 @@
 from werkzeug.security import generate_password_hash
 from estacao.ext.database import db
+from estacao.ext.factories import consolidado_factory
 from estacao.models import Consolidado, Pressao, Users, Umidade
 from datetime import date
 
@@ -15,15 +16,9 @@ def drop_db():
 
 
 def populate_db():
-    consolidado = Consolidado(data=date.fromisoformat('2020-02-01'),
-                              vis=34, tipob='tipob',
-                              qtdb=34, tipom='tipom', tipoa='tipoa',
-                              qtda=34, dir='Sd', vento=34, tempbar=34,
-                              pressao=34, tseco=34, tumido=34, tsfc=34,
-                              t5cm=34, t10cm=34, t20cm=23, t30cm=34,
-                              t40cm=34, piche=34, evap_piche=34, piche_ar=34,
-                              evap_piche_ar=34, tmin=34, tmax=34)
-    consolidado.save()
+    data = consolidado_factory(12)
+    Consolidado.query.session.bulk_save_objects(data)
+    Consolidado.query.session.commit()
     return Consolidado.query.all()
 
 
