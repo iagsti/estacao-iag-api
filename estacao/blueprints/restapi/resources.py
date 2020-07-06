@@ -67,3 +67,9 @@ class TemperaturaMinResource(Resource, AuthMixin):
         query = session.query(subquery.columns['data'], tmin, subquery.columns['tmin']).group_by(group).having(date_interval)
         data = query.all()
         return jsonify({'temp_min': [{'data': str(tempmin[0]), 'temp': tempmin[1]} for tempmin in data]})
+
+
+class TemperaturaMaxResource(Resource, AuthMixin):
+    @auth.login_required
+    def get(self, start_date, end_date):
+        pass
