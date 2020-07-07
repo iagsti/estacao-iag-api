@@ -21,4 +21,5 @@ EXTENSIONS = [
 SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'
 
 [production]
-SQLALCHEMY_DATABASE_URI = 'sqlite:///production.db'
+SQLALCHEMY_DATABASE_URI = 'mysql://estacao_api:778syTtt@127.0.0.1/estacao'
+SQLALCHEMY_BINDS = {'users': 'sqlite:///users.db'}
