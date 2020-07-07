@@ -10,6 +10,10 @@ def create_db():
     db.create_all()
 
 
+def create_user_db():
+    db.create_all(bind=['users'])
+
+
 def drop_db():
     """Drops database"""
     db.drop_all()
@@ -44,6 +48,7 @@ def populate_umidade():
 def init_app(app):
     commands = [
             create_db,
+            create_user_db,
             drop_db,
             populate_db,
             populate_pressao,
