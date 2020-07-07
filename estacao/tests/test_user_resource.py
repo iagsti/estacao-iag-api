@@ -36,39 +36,3 @@ class TestUserEndPoint:
         response = client.get('/api/v0/user/login_test/', headers=auth_header)
         data = json.loads(response.data)
         assert data.get('user').get('password') is None
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

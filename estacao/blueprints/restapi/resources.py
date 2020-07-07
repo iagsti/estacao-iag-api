@@ -1,6 +1,7 @@
 from flask import jsonify
 from estacao.exceptions.nocontent import abort, NoContentException
 from flask_restful import Resource
+from sqlalchemy import func
 
 
 from estacao.models import Consolidado, Pressao, Users, Umidade
@@ -53,3 +54,29 @@ class UmidadeResource(Resource, AuthMixin):
         query = Umidade.query.filter(date_interval)
         data = query.all()
         return jsonify({"umidade": [umidade.to_dict() for umidade in data]})
+
+
+class TemperaturaMinResource(Resource, AuthMixin):
+    @auth.login_required
+    def get(self, start_date, end_date):
+        session = Consolidado.query.session
+        subquery = session.query(Consolidado.data, Consolidado.tmin).filter(Consolidado.tmin != -99).subquery()
+        tmin = func.min(subquery.columns['tmin'])
+        group = func.date(subquery.columns['data'])
+        date_interval = subquery.columns['data'].between(start_date, end_date)
+        query = session.query(subquery.columns['data'], tmin, subquery.columns['tmin']).group_by(group).having(date_interval)
+        data = query.all()
+        return jsonify({'temp_min': [{'data': str(tempmin[0]), 'temp': tempmin[1]} for tempmin in data]})
+
+
+class TemperaturaMaxResource(Resource, AuthMixin):
+    @auth.login_required
+    def get(self, start_date, end_date):
+        session = Consolidado.query.session
+        subquery = session.query(Consolidado.data, Consolidado.tmax).filter(Consolidado.tmax != -99).subquery()
+        tmax = func.max(subquery.columns['tmax'])
+        group = func.date(subquery.columns['data'])
+        date_interval = subquery.columns['data'].between(start_date, end_date)
+        query = session.query(subquery.columns['data'], tmax, subquery.columns['tmax']).group_by(group).having(date_interval)
+        data = query.all()
+        return jsonify({'temp_max': [{'data': str(tempmax[0]), 'temp': tempmax[1]} for tempmax in data]})

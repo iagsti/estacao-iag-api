@@ -1,7 +1,7 @@
 import json
 
 
-CONSOLIDADO_URN = '/api/v0/consolidado/2020-01-01/2020-02-20/'
+CONSOLIDADO_URN = '/api/v0/consolidado/2017-01-01/2020-02-20/'
 
 
 class TestConsolidado:

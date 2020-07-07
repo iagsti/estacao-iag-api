@@ -5,7 +5,7 @@ from sqlalchemy_serializer import SerializerMixin
 
 class TestConsolidado:
     def test_consolidado_length(self, consolidado):
-        assert len(consolidado) == 1
+        assert len(consolidado) == 12
 
     def test_has_save_attribute(self, consolidado):
         assert hasattr(consolidado[0], 'save')
