@@ -1,6 +1,7 @@
 [default]
 DEBUG = false
 SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
+SQLALCHEMY_DATABASE_USERS_URI = 'sqlite:///user.db'
 SECRET_KEY = "jadkfbsdkjbfbh"
 SQLALCHEMY_TRACK_MODIFICATIONS = false
 EXTENSIONS = [

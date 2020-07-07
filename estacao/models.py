@@ -45,6 +45,7 @@ class Pressao(db.Model, SerializerMixin):
 
 
 class Users(db.Model, SerializerMixin):
+    __bind_key__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(20))
     password = db.Column(db.String(128))

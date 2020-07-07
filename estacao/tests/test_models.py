@@ -36,6 +36,9 @@ class TestUsers:
         users_list = Users.query.all()
         assert len(users_list) == 1
 
+    def test_has_bind_key_attribute(self, users):
+        assert hasattr(Users, '__bind_key__')
+
 
 class TestUmidade:
     def test_umidade_instance(self, umidade):
