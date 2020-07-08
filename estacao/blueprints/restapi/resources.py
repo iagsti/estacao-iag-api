@@ -62,7 +62,7 @@ class TemperaturaMinResource(Resource, AuthMixin):
         session = Consolidado.query.session
         subquery = session.query(Consolidado.data, Consolidado.tmin).filter(Consolidado.tmin != -99).subquery()
         tmin = func.min(subquery.columns['tmin'])
-        group = func.date(subquery.columns['data'])
+        group = subquery.columns['data']
         date_interval = subquery.columns['data'].between(start_date, end_date)
         query = session.query(subquery.columns['data'], tmin, subquery.columns['tmin']).group_by(group).having(date_interval)
         data = query.all()
@@ -75,7 +75,7 @@ class TemperaturaMaxResource(Resource, AuthMixin):
         session = Consolidado.query.session
         subquery = session.query(Consolidado.data, Consolidado.tmax).filter(Consolidado.tmax != -99).subquery()
         tmax = func.max(subquery.columns['tmax'])
-        group = func.date(subquery.columns['data'])
+        group = subquery.columns['data']
         date_interval = subquery.columns['data'].between(start_date, end_date)
         query = session.query(subquery.columns['data'], tmax, subquery.columns['tmax']).group_by(group).having(date_interval)
         data = query.all()
