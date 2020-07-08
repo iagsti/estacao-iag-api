@@ -2,6 +2,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 db = SQLAlchemy()
+tablename = 'consolidado'
+
+
+def get_consolidado_tablename(app):
+    return app.config.CONSOLIDADO_TABLENAME
 
 
 def set_sqlalchemy_binds(app):
@@ -12,5 +17,8 @@ def set_sqlalchemy_binds(app):
 
 
 def init_app(app):
+    global tablename
+    if get_consolidado_tablename(app):
+        tablename = get_consolidado_tablename(app)
     set_sqlalchemy_binds(app)
     db.init_app(app)

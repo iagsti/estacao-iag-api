@@ -1,8 +1,9 @@
-from estacao.ext.database import db
+from estacao.ext.database import db, tablename
 from sqlalchemy_serializer import SerializerMixin
 
 
 class Consolidado(db.Model, SerializerMixin):
+    __tablename__ = tablename
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.DateTime)
     vis = db.Column(db.Integer)
