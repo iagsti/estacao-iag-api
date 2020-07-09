@@ -15,6 +15,14 @@ class TemperaturaRepository:
         self.make_query(feature='tmin')
         return self.query.all()
 
+    def get_temperatura_max(self, start_date, end_date):
+        self.make_subquery(feature='tmax')
+        self.make_select(sql_func='max', feature='tmax')
+        self.make_group()
+        self.make_date_interval(start_date, end_date)
+        self.make_query(feature='tmax')
+        return self.query.all()
+
     def make_subquery(self, feature):
         data = getattr(self.model, 'data')
         feature_attr = getattr(self.model, feature)
