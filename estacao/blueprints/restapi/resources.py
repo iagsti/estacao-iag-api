@@ -1,7 +1,6 @@
 from flask import jsonify
 from estacao.exceptions.nocontent import abort, NoContentException
 from flask_restful import Resource
-from sqlalchemy import func
 
 
 from estacao.models import Consolidado, Pressao, Users, Umidade
@@ -68,11 +67,6 @@ class TemperaturaMinResource(Resource, AuthMixin):
 class TemperaturaMaxResource(Resource, AuthMixin):
     @auth.login_required
     def get(self, start_date, end_date):
-        session = Consolidado.query.session
-        subquery = session.query(Consolidado.data, Consolidado.tmax).filter(Consolidado.tmax != -99).subquery()
-        tmax = func.max(subquery.columns['tmax'])
-        group = subquery.columns['data']
-        date_interval = subquery.columns['data'].between(start_date, end_date)
-        query = session.query(subquery.columns['data'], tmax, subquery.columns['tmax']).group_by(group).having(date_interval)
-        data = query.all()
+        repository = TemperaturaRepository()
+        data = repository.get_temperatura_max(start_date, end_date)
         return jsonify({'temp_max': [{'data': str(tempmax[0]), 'temp': tempmax[1]} for tempmax in data]})
