@@ -61,7 +61,8 @@ class TemperaturaMinResource(Resource, AuthMixin):
     def get(self, start_date, end_date):
         repository = TemperaturaRepository()
         data = repository.get_temperatura_min(start_date, end_date)
-        return jsonify({'temp_min': [{'data': str(tempmin[0]), 'temp': tempmin[1]} for tempmin in data]})
+        temp_list = [{'data': str(item[0]), 'temp': item[1]} for item in data]
+        return jsonify({'temp_min': temp_list})
 
 
 class TemperaturaMaxResource(Resource, AuthMixin):
@@ -69,4 +70,5 @@ class TemperaturaMaxResource(Resource, AuthMixin):
     def get(self, start_date, end_date):
         repository = TemperaturaRepository()
         data = repository.get_temperatura_max(start_date, end_date)
-        return jsonify({'temp_max': [{'data': str(tempmax[0]), 'temp': tempmax[1]} for tempmax in data]})
+        temp_list = [{'data': str(item[0]), 'temp': item[1]} for item in data]
+        return jsonify({'temp_max': temp_list})
