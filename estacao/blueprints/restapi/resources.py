@@ -6,6 +6,7 @@ from sqlalchemy import func
 
 from estacao.models import Consolidado, Pressao, Users, Umidade
 from estacao.mixins.authentication_mixin import AuthMixin, auth
+from estacao.repositories import TemperaturaRepository
 
 
 class ConsolidadoResource(Resource, AuthMixin):
@@ -59,13 +60,8 @@ class UmidadeResource(Resource, AuthMixin):
 class TemperaturaMinResource(Resource, AuthMixin):
     @auth.login_required
     def get(self, start_date, end_date):
-        session = Consolidado.query.session
-        subquery = session.query(Consolidado.data, Consolidado.tmin).filter(Consolidado.tmin != -99).subquery()
-        tmin = func.min(subquery.columns['tmin'])
-        group = subquery.columns['data']
-        date_interval = subquery.columns['data'].between(start_date, end_date)
-        query = session.query(subquery.columns['data'], tmin, subquery.columns['tmin']).group_by(group).having(date_interval)
-        data = query.all()
+        repository = TemperaturaRepository()
+        data = repository.get_temperatura_min(start_date, end_date)
         return jsonify({'temp_min': [{'data': str(tempmin[0]), 'temp': tempmin[1]} for tempmin in data]})
 
 
