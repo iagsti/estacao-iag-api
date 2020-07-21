@@ -29,3 +29,12 @@ class TestNormalize:
         p = normalize.trans_p(698.9, 25.0)
         rh = normalize.rh_tw(26.9, 21.5, p)
         assert rh == expected
+
+    def test_has_td_attribute(self):
+        assert hasattr(Normalize(), 'td')
+
+    def test_td(self):
+        expected = 17.812832617823965
+        normalize = Normalize()
+        td = normalize.td(29.9, 21.5, 926.2597977212171)
+        assert td == expected
