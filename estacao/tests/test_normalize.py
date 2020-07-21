@@ -19,3 +19,13 @@ class TestNormalize:
         normalize = Normalize()
         trans_p = normalize.trans_p(698.9, 25.0)
         assert trans_p == expected
+
+    def test_has_rh_tw_attribute(self):
+        assert hasattr(Normalize(), 'rh_tw')
+
+    def test_rh_tw(self):
+        expected = 62.96058499472006
+        normalize = Normalize()
+        p = normalize.trans_p(698.9, 25.0)
+        rh = normalize.rh_tw(26.9, 21.5, p)
+        assert rh == expected
