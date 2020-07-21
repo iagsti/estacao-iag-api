@@ -17,3 +17,8 @@ class Normalize:
         es = self.ep(dry)
         rh = (e / es) * 100
         return rh
+
+    def td(self, dry, wet, p_hpa):
+        e = self.ep(wet) - 0.000653 * (1 + 0.000944 * wet) * p_hpa * (dry - wet)
+        td = 243.12 * (np.log(e / (6.112 * 1.0044))) / (17.67 - np.log(e / (6.112 * 1.0044)))
+        return td
