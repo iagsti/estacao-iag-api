@@ -22,3 +22,8 @@ class Normalize:
         e = self.ep(wet) - 0.000653 * (1 + 0.000944 * wet) * p_hpa * (dry - wet)
         td = 243.12 * (np.log(e / (6.112 * 1.0044))) / (17.67 - np.log(e / (6.112 * 1.0044)))
         return td
+
+    def windchill(self, dry, wind):
+        w = wind * 3.6
+        twc = 13.12 + 0.6215 * dry - 11.37 * np.power(w, 0.16) + 0.3965 * dry * np.power(w, 0.16)
+        return twc
