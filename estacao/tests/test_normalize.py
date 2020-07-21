@@ -38,3 +38,12 @@ class TestNormalize:
         normalize = Normalize()
         td = normalize.td(29.9, 21.5, 926.2597977212171)
         assert td == expected
+
+    def test_has_windchill_attribute(self):
+        assert hasattr(Normalize(), 'windchill')
+
+    def test_windchill(self):
+        expected = 28.5520490715491
+        normalize = Normalize()
+        windchill = normalize.windchill(26.9, 12)
+        assert windchill == expected
