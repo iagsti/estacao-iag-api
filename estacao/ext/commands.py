@@ -2,7 +2,7 @@ from werkzeug.security import generate_password_hash
 from estacao.ext.database import db
 from estacao.ext.factories import consolidado_factory
 from estacao.models import Consolidado, Pressao, Users, Umidade
-from datetime import date
+from datetime import date, datetime
 
 
 def create_db():
@@ -20,7 +20,11 @@ def drop_db():
 
 
 def populate_db():
-    data = consolidado_factory(12)
+    data = consolidado_factory(11)
+    now = datetime.now()
+    curr_date = now.date()
+    current_data = consolidado_factory(1, curr_date, curr_date)
+    data.append(current_data[0])
     Consolidado.query.session.bulk_save_objects(data)
     Consolidado.query.session.commit()
     return Consolidado.query.all()
