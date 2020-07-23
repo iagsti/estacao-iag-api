@@ -59,6 +59,7 @@ class CurrentConditionsRepository:
     def get_conditions(self):
         self.load_data()
         self.to_dict()
+        self.format_date()
         return self.data
 
     def load_data(self):
@@ -80,3 +81,8 @@ class CurrentConditionsRepository:
             dict_key = keys[item]
             data_dict[dict_key] = self.data[item]
         self.data = data_dict
+
+    def format_date(self):
+        date_format = '%Y-%m-%d %H:%M'
+        formatted_date = self.data.get('data').strftime(date_format)
+        self.data.update(data=formatted_date)
