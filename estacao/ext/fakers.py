@@ -41,6 +41,17 @@ class ConsolidadoProvider(BaseProvider):
         return obj
 
 
+class CurrentConditionsProvider(BaseProvider):
+    def current_conditions(self):
+        data = datetime.now()
+        return dict(data=data, temperatura_ar=20.0,
+                    temperatura_ponto_orvalho=19,
+                    umidade_relativa=90, temperatura_min=18,
+                    temperatura_max=23, visibilidade=10,
+                    vento=30, pressao=160, nuvens_baixas='Cum/20',
+                    nuvens_medias='Nim/20', nuvens_altas='Cir/30')
+
+
 providers = (
     ConsolidadoProvider,
 )
