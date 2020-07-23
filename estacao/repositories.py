@@ -56,3 +56,13 @@ class CurrentConditionsRepository:
         self.model = Consolidado
         self.session = db.session
 
+    def load_data(self):
+        m = self.model
+        current_date = datetime.now().strftime('%Y-%m-%d')
+        max_data = func.max(m.data)
+        query = self.session.query(max_data, m.vis, m.tipob, m.qtdb, m.tipom,
+                                   m.tipoa, m.qtda, m.dir, m.vento, m.tempbar,
+                                   m.pressao, m.tseco, m.tumido, m.tmin, m.tmax
+                                   ).filter(m.data.like(current_date+'%'))
+        self.data = query.first()
+
