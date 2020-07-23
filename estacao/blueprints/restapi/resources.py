@@ -72,3 +72,7 @@ class TemperaturaMaxResource(Resource, AuthMixin):
         data = repository.get_temperatura_max(start_date, end_date)
         temp_list = [{'data': str(item[0]), 'temp': item[1]} for item in data]
         return jsonify({'temp_max': temp_list})
+
+
+class CurrentConditionsResource(Resource):
+    pass
