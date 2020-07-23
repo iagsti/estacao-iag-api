@@ -5,6 +5,7 @@ from estacao.blueprints.restapi.resources import UserResource, UmidadeResource
 from estacao.ext.database import db
 from estacao.ext.commands import populate_db, populate_pressao, populate_users
 from estacao.ext.commands import populate_umidade
+from estacao.repositories import CurrentConditionsRepository
 
 
 @pytest.fixture(scope="session")
@@ -64,3 +65,9 @@ def umidade(app):
 def umidade_resource(app):
     with app.app_context():
         return UmidadeResource()
+
+
+@pytest.fixture(scope='session')
+def current_conditions(app):
+    with app.app_context():
+        return CurrentConditionsRepository()
