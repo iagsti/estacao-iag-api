@@ -54,6 +54,7 @@ class CurrentConditionsProvider(BaseProvider):
 
 providers = (
     ConsolidadoProvider,
+    CurrentConditionsProvider,
 )
 
 
