@@ -66,3 +66,12 @@ class CurrentConditionsRepository:
                                    ).filter(m.data.like(current_date+'%'))
         self.data = query.first()
 
+    def to_dict(self):
+        keys = ['data', 'vis', 'tipob', 'qtdb', 'tipom',
+                'tipoa', 'qtda', 'dir', 'vento', 'tempbar',
+                'pressao', 'tseco', 'tumido', 'tmin', 'tmax']
+        data_dict = dict()
+        for item in range(len(keys) - 1):
+            dict_key = keys[item]
+            data_dict[dict_key] = self.data[item]
+        self.data = data_dict
