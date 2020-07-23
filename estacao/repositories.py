@@ -1,5 +1,7 @@
 from estacao.models import Consolidado
 from sqlalchemy import func
+from datetime import datetime
+from estacao.ext.database import db
 
 
 class TemperaturaRepository:
@@ -47,3 +49,10 @@ class TemperaturaRepository:
         feature = self.subquery.columns[feature]
         query = self.session.query(data, select, feature).group_by(self.group)
         self.query = query.having(self.date_interval)
+
+
+class CurrentConditionsRepository:
+    def __init__(self):
+        self.model = Consolidado
+        self.session = db.session
+
