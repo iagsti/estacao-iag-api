@@ -56,6 +56,11 @@ class CurrentConditionsRepository:
         self.model = Consolidado
         self.session = db.session
 
+    def get_conditions(self):
+        self.load_data()
+        self.to_dict()
+        return self.data
+
     def load_data(self):
         m = self.model
         current_date = datetime.now().strftime('%Y-%m-%d')
