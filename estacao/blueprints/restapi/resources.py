@@ -5,7 +5,8 @@ from flask_restful import Resource
 
 from estacao.models import Consolidado, Pressao, Users, Umidade
 from estacao.mixins.authentication_mixin import AuthMixin, auth
-from estacao.repositories import TemperaturaRepository
+from estacao.repositories import (TemperaturaRepository,
+                                  CurrentConditionsRepository)
 
 
 class ConsolidadoResource(Resource, AuthMixin):
@@ -72,3 +73,11 @@ class TemperaturaMaxResource(Resource, AuthMixin):
         data = repository.get_temperatura_max(start_date, end_date)
         temp_list = [{'data': str(item[0]), 'temp': item[1]} for item in data]
         return jsonify({'temp_max': temp_list})
+
+
+class CurrentConditionsResource(Resource, AuthMixin):
+    @auth.login_required
+    def get(self):
+        repository = CurrentConditionsRepository()
+        current_conditions = repository.get_conditions()
+        return jsonify({'current': current_conditions})
