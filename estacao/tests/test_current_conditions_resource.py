@@ -16,3 +16,7 @@ class TestCurrentConditionsResource:
     def test_has_get_attribute(self):
         assert hasattr(CurrentConditionsResource, 'get')
 
+    def test_get_status_code(self, client, users, auth_header):
+        response = client.get(CURRENT_CONDITIONS_API, headers=auth_header)
+        assert response.status_code == 200
+
