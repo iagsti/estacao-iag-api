@@ -20,3 +20,7 @@ class TestCurrentConditionsResource:
         response = client.get(CURRENT_CONDITIONS_API, headers=auth_header)
         assert response.status_code == 200
 
+    def test_get_not_authorized(self, client):
+        response = client.get(CURRENT_CONDITIONS_API)
+        assert response.status_code == 401
+
