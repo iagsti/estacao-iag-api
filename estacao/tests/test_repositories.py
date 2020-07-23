@@ -44,6 +44,12 @@ class TestCurrentConditionsRepository:
         for expected in current_values:
             assert expected in response
 
+    def test_to_dict(self, current_conditions):
+        self.make_consolidado()
+        current_conditions.load_data()
+        current_conditions.to_dict()
+        assert isinstance(current_conditions.data, dict)
+
     def make_consolidado(self):
         date = datetime.now()
         consolidado = factories.consolidado_factory(1, date, date)
