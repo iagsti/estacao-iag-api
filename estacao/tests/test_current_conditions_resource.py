@@ -24,3 +24,10 @@ class TestCurrentConditionsResource:
         response = client.get(CURRENT_CONDITIONS_API)
         assert response.status_code == 401
 
+    def test_get(self, client, users, consolidado, auth_header):
+        expected = consolidado[-1:][0].to_dict()
+        response = client.get(CURRENT_CONDITIONS_API, headers=auth_header)
+        data = json.loads(response.data)
+        expected_keys = data.get('current').keys()
+        for item in expected_keys:
+            assert data.get('current').get(item) == expected.get(item)
