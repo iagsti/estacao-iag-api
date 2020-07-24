@@ -22,7 +22,7 @@ class ConsolidadoProvider(BaseProvider):
             qtda=fake.random_element(elements=(12, 50)),
             dir=fake.random_element(elements=('Su', 'No', 'Le', 'O')),
             vento=fake.random_element(elements=(12, 50)),
-            tempbar=fake.random_element(elements=(12, 50)),
+            temp_bar=fake.random_element(elements=(12, 50)),
             pressao=fake.random_element(elements=(12, 50)),
             tseco=fake.random_element(elements=(12, 50)),
             tumido=fake.random_element(elements=(12, 50)),

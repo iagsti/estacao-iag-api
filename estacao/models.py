@@ -14,7 +14,7 @@ class Consolidado(db.Model, SerializerMixin):
     qtda = db.Column(db.Integer)
     dir = db.Column(db.String)
     vento = db.Column(db.Float)
-    tempbar = db.Column(db.Float)
+    temp_bar = db.Column(db.Float)
     pressao = db.Column(db.Float)
     tseco = db.Column(db.Float)
     tumido = db.Column(db.Float)
