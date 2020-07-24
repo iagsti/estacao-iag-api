@@ -67,14 +67,14 @@ class CurrentConditionsRepository:
         current_date = datetime.now().strftime('%Y-%m-%d')
         max_data = func.max(m.data)
         query = self.session.query(max_data, m.vis, m.tipob, m.qtdb, m.tipom,
-                                   m.tipoa, m.qtda, m.dir, m.vento, m.tempbar,
+                                   m.tipoa, m.qtda, m.dir, m.vento, m.temp_bar,
                                    m.pressao, m.tseco, m.tumido, m.tmin, m.tmax
                                    ).filter(m.data.like(current_date+'%'))
         self.data = query.first()
 
     def to_dict(self):
         keys = ['data', 'vis', 'tipob', 'qtdb', 'tipom',
-                'tipoa', 'qtda', 'dir', 'vento', 'tempbar',
+                'tipoa', 'qtda', 'dir', 'vento', 'temp_bar',
                 'pressao', 'tseco', 'tumido', 'tmin', 'tmax']
         data_dict = dict()
         for item in range(len(keys) - 1):
