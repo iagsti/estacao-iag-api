@@ -5,8 +5,8 @@ from flask_restful import Resource
 
 from estacao.models import Consolidado, Pressao, Users, Umidade
 from estacao.mixins.authentication_mixin import AuthMixin, auth
-from estacao.repositories import (TemperaturaRepository,
-                                  CurrentConditionsRepository)
+from estacao.repositories.temperatura import TemperaturaRepository
+from estacao.repositories.current_conditions import CurrentConditionsRepository
 
 
 class ConsolidadoResource(Resource, AuthMixin):
