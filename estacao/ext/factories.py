@@ -8,5 +8,5 @@ def consolidado_factory(length, start_date=None, end_date=None, randomic=True):
     return data
 
 
-def current_conditions_factory(length):
-    return [fakers.fake.current_conditions() for _ in range(length)]
+def current_conditions_factory(length, **kwargs):
+    return [fakers.fake.current_conditions(**kwargs) for _ in range(length)]
