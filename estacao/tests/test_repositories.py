@@ -74,7 +74,24 @@ class TestCurrentConditionsRepository:
         for item in expected.keys():
             assert expected.get(item) == resp.get(item)
 
-    def make_consolidado(self):
-        date = datetime.now()
-        consolidado = factories.consolidado_factory(1, date, date)
-        consolidado[0].save()
+    def make_current_conditions(self, data):
+        normalize = Normalize()
+        float_round = 2
+        pressao_hpa = normalize.trans_p(data.get('pressao'), data.get('temp_bar'))
+        temp_orvalho = normalize.td(data.get('tseco'), data.get('tumido'), pressao_hpa)
+        umidade_relativa = normalize.rh_tw(data.get('tseco'), data.get('tumido'), pressao_hpa)
+        current_conditions = {
+            'data': data.get('data'),
+            'temperatura_ar': round(data.get('tseco'), float_round),
+            'temperatura_ponto_orvalho': round(temp_orvalho, float_round),
+            'umidade_relativa': round(umidade_relativa, float_round),
+            'temperatura_min': round(data.get('tmin'), float_round),
+            'temperatura_max': round(data.get('tmax'), float_round),
+            'visibilidade': round(data.get('vis'), float_round),
+            'vento': round(data.get('vento'), float_round),
+            'pressao': round(data.get('pressao'), float_round),
+            'nuvens_baixas': data.get('tipob'),
+            'nuvens_medias': data.get('tipom'),
+            'nuvens_altas': data.get('tipoa')
+        }
+        return current_conditions
