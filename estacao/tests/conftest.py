@@ -1,11 +1,14 @@
 import pytest
 import base64
+from datetime import datetime
+from estacao.models import Consolidado
 from estacao.app import create_app, minimal_app
 from estacao.blueprints.restapi.resources import UserResource, UmidadeResource
 from estacao.ext.database import db
-from estacao.ext.commands import populate_db, populate_pressao, populate_users
-from estacao.ext.commands import populate_umidade
-from estacao.repositories import CurrentConditionsRepository
+from estacao.repositories.current_conditions import CurrentConditionsRepository
+from estacao.ext import factories
+from estacao.ext.commands import (populate_db, populate_pressao,
+                                  populate_users, populate_umidade)
 
 
 @pytest.fixture(scope="session")
@@ -35,6 +38,16 @@ def auth_header(app):
 def consolidado(app):
     with app.app_context():
         return populate_db()
+
+
+@pytest.fixture(scope="session")
+def consolidado_fixed(app):
+    with app.app_context():
+        curr_date = datetime.now()
+        data = factories.consolidado_factory(1, curr_date, curr_date, False)
+        Consolidado.query.session.bulk_save_objects(data)
+        Consolidado.query.session.commit()
+        return Consolidado.query.all()
 
 
 @pytest.fixture(scope="session")
