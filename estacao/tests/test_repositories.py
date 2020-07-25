@@ -1,7 +1,7 @@
-from estacao.repositories import TemperaturaRepository
+from estacao.repositories.temperatura import TemperaturaRepository
 from datetime import datetime
-from estacao.ext import factories
 from estacao.models import Consolidado
+from estacao.normalize import Normalize
 
 
 class TestTemperaturaMinRepository:
@@ -39,9 +39,8 @@ class TestCurrentConditionsRepository:
     def test_model_instance(self, current_conditions, consolidado):
         assert isinstance(current_conditions.model(), Consolidado)
 
-    def test_load_data(self, current_conditions):
-        self.make_consolidado()
-        current_values = ('tipob', 12, 'tipom', 'tipoa')
+    def test_load_data(self, current_conditions, consolidado_fixed):
+        current_values = ('tipob', 20, 'tipom', 'tipoa')
         current_conditions.load_data()
         response = current_conditions.data
         for expected in current_values:
