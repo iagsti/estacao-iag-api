@@ -15,6 +15,8 @@ class CurrentConditionsRepository:
 
     def get_conditions(self):
         self.load_data()
+        self.load_temperature('min', 'tmin')
+        self.load_temperature('max', 'tmax')
         self.to_dict()
         self.format_date()
         self.normalize()
@@ -22,20 +24,40 @@ class CurrentConditionsRepository:
         self.round_data()
         return self.data
 
+    def load_temperature(self, db_func, col):
+        m = self.model
+        attribute = getattr(m, col)
+        dates = self.make_dates()
+        between = m.data.between(dates.get('cur_date_ini'),
+                                 dates.get('cur_date_end'))
+
+        temperature = getattr(func, db_func)(attribute)
+
+        subquery = self.session.query(
+            temperature
+        ).filter(
+            between
+        ).filter(attribute != 0).subquery()
+
+        query = self.session.query(
+            m.data, getattr(m, col)
+        ).filter(attribute == subquery).filter(between)
+
+        setattr(self, col, query.first())
+
     def load_data(self):
         m = self.model
-        current_date = datetime.now().strftime('%Y-%m-%d')
-        max_data = func.max(m.data)
-        query = self.session.query(max_data, m.vis, m.tipob, m.qtdb, m.tipom,
-                                   m.tipoa, m.qtda, m.dir, m.vento, m.temp_bar,
-                                   m.pressao, m.tseco, m.tumido, m.tmin, m.tmax
-                                   ).filter(m.data.like(current_date+'%'))
+        query = self.session.query(
+            m.data, m.vis, m.tipob, m.qtdb, m.tipom,
+            m.tipoa, m.qtda, m.dir, m.vento, m.temp_bar,
+            m.pressao, m.tseco, m.tumido
+        ).order_by(m.data.desc())
         self.data = query.first()
 
     def to_dict(self):
         keys = ['data', 'vis', 'tipob', 'qtdb', 'tipom',
                 'tipoa', 'qtda', 'dir', 'vento', 'temp_bar',
-                'pressao', 'tseco', 'tumido', 'tmin', 'tmax']
+                'pressao', 'tseco', 'tumido']
         data_dict = dict()
         for item in range(len(keys)):
             dict_key = keys[item]
@@ -59,6 +81,7 @@ class CurrentConditionsRepository:
 
         self.data['ponto_orvalho'] = temp_orvalho
         self.data['umidade_relativa'] = umidade_relativa
+        self.data['pressao'] = p_hpa
 
     def map_data(self):
         current_conditions = {
@@ -66,8 +89,10 @@ class CurrentConditionsRepository:
             'temperatura_ar': self.data.get('tseco'),
             'temperatura_ponto_orvalho': self.data.get('ponto_orvalho'),
             'umidade_relativa': self.data.get('umidade_relativa'),
-            'temperatura_min': self.data.get('tmin'),
-            'temperatura_max': self.data.get('tmax'),
+            'temperatura_min': self.tmin[1],
+            'temperatura_min_date': self.tmin[0].strftime('%Y-%m-%d %H:%M'),
+            'temperatura_max': self.tmax[1],
+            'temperatura_max_date': self.tmax[0].strftime('%Y-%m-%d %H:%M'),
             'visibilidade': self.data.get('vis'),
             'vento': self.data.get('vento'),
             'pressao': self.data.get('pressao'),
@@ -81,3 +106,14 @@ class CurrentConditionsRepository:
         for key in self.data.keys():
             if isinstance(self.data.get(key), float):
                 self.data[key] = round(self.data.get(key), FLOAT_ROUND)
+
+    def make_dates(self):
+        time_ini = '00:00:00'
+        time_end = '23:59:59'
+        cur_date = datetime.now().strftime('%Y-%m-%d')
+        cur_date_ini = cur_date + ' ' + time_ini
+        cur_date_end = cur_date + ' ' + time_end
+
+        return {'cur_date': cur_date,
+                'cur_date_ini': cur_date_ini,
+                'cur_date_end': cur_date_end}

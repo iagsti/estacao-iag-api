@@ -25,8 +25,9 @@ class TestCurrentConditionsResource:
         response = client.get(CURRENT_CONDITIONS_API)
         assert response.status_code == 401
 
-    def test_get(self, client, users, consolidado_fixed, auth_header):
-        data = consolidado_fixed[-1:][0].to_dict()
+    def test_get(self, client, users, consolidado, auth_header):
+        response = consolidado.query.order_by(consolidado.data.desc()).first()
+        data = response.to_dict()
         expected = self.make_current_conditions(data)
         response = client.get(CURRENT_CONDITIONS_API, headers=auth_header)
         data = json.loads(response.data)
@@ -46,10 +47,12 @@ class TestCurrentConditionsResource:
             'temperatura_ponto_orvalho': round(temp_orvalho, float_round),
             'umidade_relativa': round(umidade_relativa, float_round),
             'temperatura_min': round(data.get('tmin'), float_round),
+            'temperatura_min_date': data.get('data'),
             'temperatura_max': round(data.get('tmax'), float_round),
+            'temperatura_max_date': data.get('data'),
             'visibilidade': round(data.get('vis'), float_round),
             'vento': round(data.get('vento'), float_round),
-            'pressao': round(data.get('pressao'), float_round),
+            'pressao': round(pressao_hpa, float_round),
             'nuvens_baixas': data.get('tipob'),
             'nuvens_medias': data.get('tipom'),
             'nuvens_altas': data.get('tipoa')

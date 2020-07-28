@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from estacao.repositories.temperatura import TemperaturaRepository
 from datetime import datetime
 from estacao.models import Consolidado
@@ -36,43 +37,56 @@ class TestCurrentConditionsRepository:
     def test_has_model_attribute(self, current_conditions):
         assert hasattr(current_conditions, 'model')
 
-    def test_model_instance(self, current_conditions, consolidado):
+    def test_model_instance(self, current_conditions):
         assert isinstance(current_conditions.model(), Consolidado)
 
-    def test_load_data(self, current_conditions, consolidado_fixed):
-        current_values = ('tipob', 20, 'tipom', 'tipoa')
+    def test_load_data(self, current_conditions, consolidado):
+        current_values = ('tipob', 34, 'tipom', 'tipoa')
         current_conditions.load_data()
         response = current_conditions.data
         for expected in current_values:
             assert expected in response
 
-    def test_get_conditions_data_type(self, current_conditions,
-                                      consolidado_fixed):
+    def test_get_conditions_data_type(self, current_conditions):
         resp = current_conditions.get_conditions()
         assert isinstance(resp, dict)
 
-    def test_to_dict(self, current_conditions, consolidado_fixed):
+    def test_to_dict(self, current_conditions):
         current_conditions.load_data()
         current_conditions.to_dict()
         assert isinstance(current_conditions.data, dict)
 
-    def test_map_data(self, consolidado_fixed, current_conditions):
+    def test_map_data(self, current_conditions, consolidado):
         current_conditions.load_data()
+        current_conditions.load_temperature('min', 'tmin')
+        current_conditions.load_temperature('max', 'tmax')
         current_conditions.to_dict()
         current_conditions.format_date()
         current_conditions.normalize()
         current_conditions.map_data()
         current_conditions.round_data()
-        data = consolidado_fixed[-1:][0].to_dict()
+        data = consolidado.query.order_by(consolidado.data.desc()).first()
+        data = data.to_dict()
         expected = self.make_current_conditions(data)
         assert current_conditions.data == expected
 
-    def test_get_conditions(self, current_conditions, consolidado_fixed):
-        data = consolidado_fixed[-1:][0].to_dict()
+    def test_get_conditions(self, current_conditions, consolidado):
+        data = consolidado.query.order_by(consolidado.data.desc()).first()
+        temp_max = consolidado.query.session.query(func.max(consolidado.tmax))
+        temp_max = temp_max.first()[0]
+        data = data.to_dict()
+        data.update(tmax=data.get('tmax'))
         expected = self.make_current_conditions(data)
         resp = current_conditions.get_conditions()
         for item in expected.keys():
             assert expected.get(item) == resp.get(item)
+
+    def test_load_temperature(self, current_conditions, consolidado):
+        data = consolidado.query.order_by(consolidado.data.desc()).first()
+        data = data.to_dict()
+        current_conditions.load_temperature('min', 'tmin')
+        date, tmin = current_conditions.tmin
+        assert tmin == data.get('tmin')
 
     def make_current_conditions(self, data):
         normalize = Normalize()
@@ -86,10 +100,12 @@ class TestCurrentConditionsRepository:
             'temperatura_ponto_orvalho': round(temp_orvalho, float_round),
             'umidade_relativa': round(umidade_relativa, float_round),
             'temperatura_min': round(data.get('tmin'), float_round),
+            'temperatura_min_date': data.get('data'),
             'temperatura_max': round(data.get('tmax'), float_round),
+            'temperatura_max_date': data.get('data'),
             'visibilidade': round(data.get('vis'), float_round),
             'vento': round(data.get('vento'), float_round),
-            'pressao': round(data.get('pressao'), float_round),
+            'pressao': round(pressao_hpa, float_round),
             'nuvens_baixas': data.get('tipob'),
             'nuvens_medias': data.get('tipom'),
             'nuvens_altas': data.get('tipoa')
