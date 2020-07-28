@@ -27,7 +27,7 @@ def populate_db():
     data.append(current_data[0])
     Consolidado.query.session.bulk_save_objects(data)
     Consolidado.query.session.commit()
-    return Consolidado.query.all()
+    return Consolidado
 
 
 def populate_pressao():
