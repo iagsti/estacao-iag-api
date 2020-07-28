@@ -1,12 +1,9 @@
 import pytest
 import base64
-from datetime import datetime
-from estacao.models import Consolidado
 from estacao.app import create_app, minimal_app
 from estacao.blueprints.restapi.resources import UserResource, UmidadeResource
 from estacao.ext.database import db
 from estacao.repositories.current_conditions import CurrentConditionsRepository
-from estacao.ext import factories
 from estacao.ext.commands import (populate_db, populate_pressao,
                                   populate_users, populate_umidade)
 

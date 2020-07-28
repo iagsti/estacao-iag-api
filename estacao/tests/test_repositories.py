@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from estacao.repositories.temperatura import TemperaturaRepository
 from datetime import datetime
 from estacao.models import Consolidado
@@ -64,7 +65,8 @@ class TestCurrentConditionsRepository:
         current_conditions.normalize()
         current_conditions.map_data()
         current_conditions.round_data()
-        data = consolidado_fixed[-1:][0].to_dict()
+        data = consolidado.query.order_by(consolidado.data.desc()).first()
+        data = data.to_dict()
         expected = self.make_current_conditions(data)
         assert current_conditions.data == expected
 
@@ -79,10 +81,12 @@ class TestCurrentConditionsRepository:
         for item in expected.keys():
             assert expected.get(item) == resp.get(item)
 
-    def test_load_temperature(self, current_conditions):
+    def test_load_temperature(self, current_conditions, consolidado):
+        data = consolidado.query.order_by(consolidado.data.desc()).first()
+        data = data.to_dict()
         current_conditions.load_temperature('min', 'tmin')
         date, tmin = current_conditions.tmin
-        assert tmin == 20.0
+        assert tmin == data.get('tmin')
 
     def make_current_conditions(self, data):
         normalize = Normalize()
