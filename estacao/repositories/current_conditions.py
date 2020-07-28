@@ -26,24 +26,32 @@ class CurrentConditionsRepository:
 
     def load_temperature(self, db_func, col):
         m = self.model
+        attribute = getattr(m, col)
         dates = self.make_dates()
         between = m.data.between(dates.get('cur_date_ini'),
                                  dates.get('cur_date_end'))
-        temperature = getattr(func, db_func)(getattr(m, col))
-        query = self.session.query(m.data, temperature).filter(between)
+
+        temperature = getattr(func, db_func)(attribute)
+
+        subquery = self.session.query(
+            temperature
+        ).filter(
+            between
+        ).filter(attribute != 0).subquery()
+
+        query = self.session.query(
+            m.data, getattr(m, col)
+        ).filter(attribute == subquery).filter(between)
+
         setattr(self, col, query.first())
 
     def load_data(self):
         m = self.model
-
         query = self.session.query(
             m.data, m.vis, m.tipob, m.qtdb, m.tipom,
             m.tipoa, m.qtda, m.dir, m.vento, m.temp_bar,
             m.pressao, m.tseco, m.tumido
         ).order_by(m.data.desc())
-
-        print(str(query))
-
         self.data = query.first()
 
     def to_dict(self):
