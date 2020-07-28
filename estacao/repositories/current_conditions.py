@@ -15,12 +15,23 @@ class CurrentConditionsRepository:
 
     def get_conditions(self):
         self.load_data()
+        self.load_temperature('min', 'tmin')
+        self.load_temperature('max', 'tmax')
         self.to_dict()
         self.format_date()
         self.normalize()
         self.map_data()
         self.round_data()
         return self.data
+
+    def load_temperature(self, db_func, col):
+        m = self.model
+        dates = self.make_dates()
+        between = m.data.between(dates.get('cur_date_ini'),
+                                 dates.get('cur_date_end'))
+        temperature = getattr(func, db_func)(getattr(m, col))
+        query = self.session.query(m.data, temperature).filter(between)
+        setattr(self, col, query.first())
 
     def load_data(self):
         m = self.model
@@ -35,7 +46,6 @@ class CurrentConditionsRepository:
     def to_dict(self):
         keys = ['data', 'vis', 'tipob', 'qtdb', 'tipom',
                 'tipoa', 'qtda', 'dir', 'vento', 'temp_bar',
-                'pressao', 'tseco', 'tumido', 'tmin', 'tmax']
         data_dict = dict()
         for item in range(len(keys)):
             dict_key = keys[item]
