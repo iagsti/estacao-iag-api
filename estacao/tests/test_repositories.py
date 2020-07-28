@@ -36,10 +36,10 @@ class TestCurrentConditionsRepository:
     def test_has_model_attribute(self, current_conditions):
         assert hasattr(current_conditions, 'model')
 
-    def test_model_instance(self, current_conditions, consolidado):
+    def test_model_instance(self, current_conditions):
         assert isinstance(current_conditions.model(), Consolidado)
 
-    def test_load_data(self, current_conditions, consolidado_fixed):
+    def test_load_data(self, current_conditions):
         current_values = ('tipob', 20, 'tipom', 'tipoa')
         current_conditions.load_data()
         response = current_conditions.data
@@ -51,7 +51,7 @@ class TestCurrentConditionsRepository:
         resp = current_conditions.get_conditions()
         assert isinstance(resp, dict)
 
-    def test_to_dict(self, current_conditions, consolidado_fixed):
+    def test_to_dict(self, current_conditions):
         current_conditions.load_data()
         current_conditions.to_dict()
         assert isinstance(current_conditions.data, dict)
