@@ -74,6 +74,11 @@ class TestCurrentConditionsRepository:
         for item in expected.keys():
             assert expected.get(item) == resp.get(item)
 
+    def test_load_temperature(self, current_conditions):
+        current_conditions.load_temperature('min', 'tmin')
+        date, tmin = current_conditions.tmin
+        assert tmin == 20.0
+
     def make_current_conditions(self, data):
         normalize = Normalize()
         float_round = 2
