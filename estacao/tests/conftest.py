@@ -41,16 +41,6 @@ def consolidado(app):
 
 
 @pytest.fixture(scope="session")
-def consolidado_fixed(app):
-    with app.app_context():
-        curr_date = datetime.now()
-        data = factories.consolidado_factory(1, curr_date, curr_date, False)
-        Consolidado.query.session.bulk_save_objects(data)
-        Consolidado.query.session.commit()
-        return Consolidado.query.all()
-
-
-@pytest.fixture(scope="session")
 def pressao(app):
     with app.app_context():
         return populate_pressao()

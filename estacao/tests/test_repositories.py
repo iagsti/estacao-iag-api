@@ -46,8 +46,7 @@ class TestCurrentConditionsRepository:
         for expected in current_values:
             assert expected in response
 
-    def test_get_conditions_data_type(self, current_conditions,
-                                      consolidado_fixed):
+    def test_get_conditions_data_type(self, current_conditions):
         resp = current_conditions.get_conditions()
         assert isinstance(resp, dict)
 
@@ -56,7 +55,7 @@ class TestCurrentConditionsRepository:
         current_conditions.to_dict()
         assert isinstance(current_conditions.data, dict)
 
-    def test_map_data(self, current_conditions, consolidado_fixed):
+    def test_map_data(self, current_conditions, consolidado):
         current_conditions.load_data()
         current_conditions.load_temperature('min', 'tmin')
         current_conditions.load_temperature('max', 'tmax')
@@ -69,8 +68,12 @@ class TestCurrentConditionsRepository:
         expected = self.make_current_conditions(data)
         assert current_conditions.data == expected
 
-    def test_get_conditions(self, current_conditions, consolidado_fixed):
-        data = consolidado_fixed[-1:][0].to_dict()
+    def test_get_conditions(self, current_conditions, consolidado):
+        data = consolidado.query.order_by(consolidado.data.desc()).first()
+        temp_max = consolidado.query.session.query(func.max(consolidado.tmax))
+        temp_max = temp_max.first()[0]
+        data = data.to_dict()
+        data.update(tmax=data.get('tmax'))
         expected = self.make_current_conditions(data)
         resp = current_conditions.get_conditions()
         for item in expected.keys():
