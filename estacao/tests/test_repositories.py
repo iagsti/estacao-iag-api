@@ -40,8 +40,8 @@ class TestCurrentConditionsRepository:
     def test_model_instance(self, current_conditions):
         assert isinstance(current_conditions.model(), Consolidado)
 
-    def test_load_data(self, current_conditions):
-        current_values = ('tipob', 20, 'tipom', 'tipoa')
+    def test_load_data(self, current_conditions, consolidado):
+        current_values = ('tipob', 34, 'tipom', 'tipoa')
         current_conditions.load_data()
         response = current_conditions.data
         for expected in current_values:
