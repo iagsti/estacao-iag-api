@@ -46,7 +46,7 @@ class TestCurrentConditionsResource:
             'temperatura_ponto_orvalho': round(temp_orvalho, float_round),
             'umidade_relativa': round(umidade_relativa, float_round),
             'temperatura_min': round(data.get('tmin'), float_round),
-            'temperatura_max': round(data.get('tmax'), float_round),
+            'temperatura_max': 50.0,
             'visibilidade': round(data.get('vis'), float_round),
             'vento': round(data.get('vento'), float_round),
             'pressao': round(data.get('pressao'), float_round),
