@@ -81,6 +81,7 @@ class CurrentConditionsRepository:
 
         self.data['ponto_orvalho'] = temp_orvalho
         self.data['umidade_relativa'] = umidade_relativa
+        self.data['pressao'] = p_hpa
 
     def map_data(self):
         current_conditions = {
