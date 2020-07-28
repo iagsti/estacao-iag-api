@@ -56,8 +56,10 @@ class TestCurrentConditionsRepository:
         current_conditions.to_dict()
         assert isinstance(current_conditions.data, dict)
 
-    def test_map_data(self, consolidado_fixed, current_conditions):
+    def test_map_data(self, current_conditions, consolidado_fixed):
         current_conditions.load_data()
+        current_conditions.load_temperature('min', 'tmin')
+        current_conditions.load_temperature('max', 'tmax')
         current_conditions.to_dict()
         current_conditions.format_date()
         current_conditions.normalize()
@@ -91,7 +93,7 @@ class TestCurrentConditionsRepository:
             'temperatura_ponto_orvalho': round(temp_orvalho, float_round),
             'umidade_relativa': round(umidade_relativa, float_round),
             'temperatura_min': round(data.get('tmin'), float_round),
-            'temperatura_max': round(data.get('tmax'), float_round),
+            'temperatura_max': 50.0,
             'visibilidade': round(data.get('vis'), float_round),
             'vento': round(data.get('vento'), float_round),
             'pressao': round(data.get('pressao'), float_round),
