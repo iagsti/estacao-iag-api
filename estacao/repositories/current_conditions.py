@@ -91,3 +91,14 @@ class CurrentConditionsRepository:
         for key in self.data.keys():
             if isinstance(self.data.get(key), float):
                 self.data[key] = round(self.data.get(key), FLOAT_ROUND)
+
+    def make_dates(self):
+        time_ini = '00:00:00'
+        time_end = '23:59:59'
+        cur_date = datetime.now().strftime('%Y-%m-%d')
+        cur_date_ini = cur_date + ' ' + time_ini
+        cur_date_end = cur_date + ' ' + time_end
+
+        return {'cur_date': cur_date,
+                'cur_date_ini': cur_date_ini,
+                'cur_date_end': cur_date_end}
