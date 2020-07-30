@@ -60,6 +60,14 @@ class TestCurrentConditionsRepository:
         current_conditions.to_dict()
         assert isinstance(current_conditions.data, dict)
 
+    def test_to_dict_items(self, current_conditions):
+        current_conditions.load_data()
+        current_conditions.to_dict()
+        expected = ['data', 'vis', 'tipob', 'qtdb', 'tipom', 'qtdm',
+                    'tipoa', 'qtda', 'dir', 'vento', 'temp_bar',
+                    'pressao', 'tseco', 'tumido']
+        assert list(current_conditions.data.keys()) == expected
+
     def test_map_data(self, current_conditions, consolidado):
         current_conditions.load_data()
         current_conditions.load_temperature('min', 'tmin')
