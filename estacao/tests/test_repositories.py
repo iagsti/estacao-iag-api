@@ -119,7 +119,10 @@ class TestCurrentConditionsRepository:
             'vento': round(data.get('vento'), float_round),
             'pressao': round(pressao_hpa, float_round),
             'nuvens_baixas': data.get('tipob'),
+            'quant_nuvens_baixas': data.get('qtdb'),
             'nuvens_medias': data.get('tipom'),
-            'nuvens_altas': data.get('tipoa')
+            'quant_nuvens_medias': data.get('qtdm'),
+            'nuvens_altas': data.get('tipoa'),
+            'quant_nuvens_altas': data.get('qtda'),
         }
         return current_conditions
