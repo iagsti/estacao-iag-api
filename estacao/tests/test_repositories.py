@@ -110,6 +110,10 @@ class TestCurrentConditionsRepository:
             current_conditions.set_visibility()
             assert current_conditions.data.get('vis') == distance[item]
 
+    def test_current_conditions_has_dir_attr(self, current_conditions):
+        response = current_conditions.get_conditions()
+        assert 'dir' in list(response.keys())
+
     def get_distances(self):
         return ['menos de 50m', '50m a 200m', '200m a 500m',
                 '500m a 100m', '1km a 2km', '2km a 4km',
