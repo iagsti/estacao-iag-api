@@ -104,6 +104,7 @@ class CurrentConditionsRepository:
             'temperatura_max_date': self.tmax[0].strftime('%Y-%m-%d %H:%M'),
             'visibilidade': self.data.get('vis'),
             'vento': self.data.get('vento'),
+            'dir': self.data.get('dir'),
             'pressao': self.data.get('pressao'),
             'nuvens_baixas': self.data.get('tipob'),
             'quant_nuvens_baixas': self.data.get('qtdb'),
