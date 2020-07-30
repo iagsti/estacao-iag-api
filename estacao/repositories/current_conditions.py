@@ -97,8 +97,11 @@ class CurrentConditionsRepository:
             'vento': self.data.get('vento'),
             'pressao': self.data.get('pressao'),
             'nuvens_baixas': self.data.get('tipob'),
+            'quant_nuvens_baixas': self.data.get('qtdb'),
             'nuvens_medias': self.data.get('tipom'),
-            'nuvens_altas': self.data.get('tipoa')
+            'quant_nuvens_medias': self.data.get('qtdm'),
+            'nuvens_altas': self.data.get('tipoa'),
+            'quant_nuvens_altas': self.data.get('qtda')
         }
         self.data = current_conditions
 
