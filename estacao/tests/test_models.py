@@ -10,6 +10,9 @@ class TestConsolidado:
     def test_has_save_attribute(self, consolidado):
         assert hasattr(consolidado.query.first(), 'save')
 
+    def test_has_attribute_qtdm(self, consolidado):
+        assert hasattr(consolidado, 'qtdm')
+
 
 class TestPressao:
     def test_pressao_length(self, pressao):

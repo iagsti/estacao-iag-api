@@ -10,6 +10,7 @@ class Consolidado(db.Model, SerializerMixin):
     tipob = db.Column(db.String)
     qtdb = db.Column(db.Integer)
     tipom = db.Column(db.String)
+    qtdm = db.Column(db.String)
     tipoa = db.Column(db.String)
     qtda = db.Column(db.Integer)
     dir = db.Column(db.String)

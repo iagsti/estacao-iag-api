@@ -41,11 +41,15 @@ class TestCurrentConditionsRepository:
         assert isinstance(current_conditions.model(), Consolidado)
 
     def test_load_data(self, current_conditions, consolidado):
-        current_values = ('tipob', 34, 'tipom', 'tipoa')
+        data = consolidado.query.order_by(consolidado.data.desc()).first()
+        data = data.to_dict()
+        current_values = ['vis', 'tipob', 'qtdb', 'tipom', 'qtdm',
+                          'tipoa', 'qtda', 'dir', 'vento', 'temp_bar',
+                          'pressao', 'tseco', 'tumido']
         current_conditions.load_data()
         response = current_conditions.data
-        for expected in current_values:
-            assert expected in response
+        for key in current_values:
+            assert data.get(key) in response
 
     def test_get_conditions_data_type(self, current_conditions):
         resp = current_conditions.get_conditions()
@@ -55,6 +59,14 @@ class TestCurrentConditionsRepository:
         current_conditions.load_data()
         current_conditions.to_dict()
         assert isinstance(current_conditions.data, dict)
+
+    def test_to_dict_items(self, current_conditions):
+        current_conditions.load_data()
+        current_conditions.to_dict()
+        expected = ['data', 'vis', 'tipob', 'qtdb', 'tipom', 'qtdm',
+                    'tipoa', 'qtda', 'dir', 'vento', 'temp_bar',
+                    'pressao', 'tseco', 'tumido']
+        assert list(current_conditions.data.keys()) == expected
 
     def test_map_data(self, current_conditions, consolidado):
         current_conditions.load_data()
@@ -107,7 +119,10 @@ class TestCurrentConditionsRepository:
             'vento': round(data.get('vento'), float_round),
             'pressao': round(pressao_hpa, float_round),
             'nuvens_baixas': data.get('tipob'),
+            'quant_nuvens_baixas': data.get('qtdb'),
             'nuvens_medias': data.get('tipom'),
-            'nuvens_altas': data.get('tipoa')
+            'quant_nuvens_medias': data.get('qtdm'),
+            'nuvens_altas': data.get('tipoa'),
+            'quant_nuvens_altas': data.get('qtda'),
         }
         return current_conditions

@@ -48,14 +48,14 @@ class CurrentConditionsRepository:
     def load_data(self):
         m = self.model
         query = self.session.query(
-            m.data, m.vis, m.tipob, m.qtdb, m.tipom,
+            m.data, m.vis, m.tipob, m.qtdb, m.tipom, m.qtdm,
             m.tipoa, m.qtda, m.dir, m.vento, m.temp_bar,
             m.pressao, m.tseco, m.tumido
         ).order_by(m.data.desc())
         self.data = query.first()
 
     def to_dict(self):
-        keys = ['data', 'vis', 'tipob', 'qtdb', 'tipom',
+        keys = ['data', 'vis', 'tipob', 'qtdb', 'tipom', 'qtdm',
                 'tipoa', 'qtda', 'dir', 'vento', 'temp_bar',
                 'pressao', 'tseco', 'tumido']
         data_dict = dict()
@@ -97,8 +97,11 @@ class CurrentConditionsRepository:
             'vento': self.data.get('vento'),
             'pressao': self.data.get('pressao'),
             'nuvens_baixas': self.data.get('tipob'),
+            'quant_nuvens_baixas': self.data.get('qtdb'),
             'nuvens_medias': self.data.get('tipom'),
-            'nuvens_altas': self.data.get('tipoa')
+            'quant_nuvens_medias': self.data.get('qtdm'),
+            'nuvens_altas': self.data.get('tipoa'),
+            'quant_nuvens_altas': self.data.get('qtda')
         }
         self.data = current_conditions
 
