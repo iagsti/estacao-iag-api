@@ -50,7 +50,7 @@ class TestCurrentConditionsResource:
             'temperatura_min_date': data.get('data'),
             'temperatura_max': round(data.get('tmax'), float_round),
             'temperatura_max_date': data.get('data'),
-            'visibilidade': round(data.get('vis'), float_round),
+            'visibilidade': 'maior que 50km',
             'vento': round(data.get('vento'), float_round),
             'pressao': round(pressao_hpa, float_round),
             'nuvens_baixas': data.get('tipob'),

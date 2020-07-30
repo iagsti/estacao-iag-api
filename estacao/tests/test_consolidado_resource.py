@@ -23,4 +23,4 @@ class TestConsolidado:
     def test_uri_reponse_data_value(self, client, users, consolidado, auth_header):
         response = client.get(CONSOLIDADO_URN, headers=auth_header)
         data = json.loads(response.data)
-        assert data['consolidado'][0]['vis'] == 34
+        assert data['consolidado'][0]['vis'] == 9

@@ -75,6 +75,7 @@ class TestCurrentConditionsRepository:
         current_conditions.to_dict()
         current_conditions.format_date()
         current_conditions.normalize()
+        current_conditions.set_visibility()
         current_conditions.map_data()
         current_conditions.round_data()
         data = consolidado.query.order_by(consolidado.data.desc()).first()
@@ -100,12 +101,28 @@ class TestCurrentConditionsRepository:
         date, tmin = current_conditions.tmin
         assert tmin == data.get('tmin')
 
+    def test_set_visibility(self, current_conditions):
+        current_conditions.load_data()
+        current_conditions.to_dict()
+        distance = self.get_distances()
+        for item in range(len(distance)):
+            current_conditions.data.update(vis=item)
+            current_conditions.set_visibility()
+            assert current_conditions.data.get('vis') == distance[item]
+
+    def get_distances(self):
+        return ['menos de 50m', '50m a 200m', '200m a 500m',
+                '500m a 100m', '1km a 2km', '2km a 4km',
+                '4km a 10km', '10km a 20km', '20km a 50km',
+                'maior que 50km']
+
     def make_current_conditions(self, data):
         normalize = Normalize()
         float_round = 2
         pressao_hpa = normalize.trans_p(data.get('pressao'), data.get('temp_bar'))
         temp_orvalho = normalize.td(data.get('tseco'), data.get('tumido'), pressao_hpa)
         umidade_relativa = normalize.rh_tw(data.get('tseco'), data.get('tumido'), pressao_hpa)
+        distance = self.get_distances()
         current_conditions = {
             'data': data.get('data'),
             'temperatura_ar': round(data.get('tseco'), float_round),
@@ -115,7 +132,7 @@ class TestCurrentConditionsRepository:
             'temperatura_min_date': data.get('data'),
             'temperatura_max': round(data.get('tmax'), float_round),
             'temperatura_max_date': data.get('data'),
-            'visibilidade': round(data.get('vis'), float_round),
+            'visibilidade': distance[data.get('vis')],
             'vento': round(data.get('vento'), float_round),
             'pressao': round(pressao_hpa, float_round),
             'nuvens_baixas': data.get('tipob'),

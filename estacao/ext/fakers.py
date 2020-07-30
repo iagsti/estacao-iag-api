@@ -19,7 +19,7 @@ class ConsolidadoProvider(BaseProvider):
             end_date = datetime(2018, 1, 1, 13, 48, 10)
         obj = Consolidado(
             data=fake.date_time_between_dates(start_date, end_date),
-            vis=34, tipob='tipob', qtdb=float_elements, tipom='tipom',
+            vis=9, tipob='tipob', qtdb=float_elements, tipom='tipom',
             qtdm='qtdm', tipoa='tipoa', qtda=float_elements, dir=dir_element,
             vento=float_elements, temp_bar=float_elements,
             pressao=float_elements, tseco=float_elements,
