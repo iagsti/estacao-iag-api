@@ -110,6 +110,10 @@ class TestCurrentConditionsRepository:
             current_conditions.set_visibility()
             assert current_conditions.data.get('vis') == distance[item]
 
+    def test_current_conditions_has_dir_attr(self, current_conditions):
+        response = current_conditions.get_conditions()
+        assert 'dir' in list(response.keys())
+
     def get_distances(self):
         return ['menos de 50m', '50m a 200m', '200m a 500m',
                 '500m a 100m', '1km a 2km', '2km a 4km',
@@ -134,6 +138,7 @@ class TestCurrentConditionsRepository:
             'temperatura_max_date': data.get('data'),
             'visibilidade': distance[data.get('vis')],
             'vento': round(data.get('vento'), float_round),
+            'dir': data.get('dir'),
             'pressao': round(pressao_hpa, float_round),
             'nuvens_baixas': data.get('tipob'),
             'quant_nuvens_baixas': data.get('qtdb'),
