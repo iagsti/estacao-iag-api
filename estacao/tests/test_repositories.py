@@ -138,6 +138,7 @@ class TestCurrentConditionsRepository:
             'temperatura_max_date': data.get('data'),
             'visibilidade': distance[data.get('vis')],
             'vento': round(data.get('vento'), float_round),
+            'dir': data.get('dir'),
             'pressao': round(pressao_hpa, float_round),
             'nuvens_baixas': data.get('tipob'),
             'quant_nuvens_baixas': data.get('qtdb'),
