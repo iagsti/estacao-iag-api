@@ -83,6 +83,14 @@ class CurrentConditionsRepository:
         self.data['umidade_relativa'] = umidade_relativa
         self.data['pressao'] = p_hpa
 
+    def set_visibility(self):
+        distances = ['menos de 50m', '50m a 200m', '200m a 500m',
+                     '500m a 100m', '1km a 2km', '2km a 4km',
+                     '4km a 10km', '10km a 20km', '20km a 50km',
+                     'maior que 50km']
+        visibility = self.data.get('vis')
+        self.data.update(vis=distances[visibility])
+
     def map_data(self):
         current_conditions = {
             'data': self.data.get('data'),
