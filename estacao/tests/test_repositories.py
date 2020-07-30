@@ -41,11 +41,15 @@ class TestCurrentConditionsRepository:
         assert isinstance(current_conditions.model(), Consolidado)
 
     def test_load_data(self, current_conditions, consolidado):
-        current_values = ('tipob', 34, 'tipom', 'tipoa')
+        data = consolidado.query.order_by(consolidado.data.desc()).first()
+        data = data.to_dict()
+        current_values = ['vis', 'tipob', 'qtdb', 'tipom', 'qtdm',
+                          'tipoa', 'qtda', 'dir', 'vento', 'temp_bar',
+                          'pressao', 'tseco', 'tumido']
         current_conditions.load_data()
         response = current_conditions.data
-        for expected in current_values:
-            assert expected in response
+        for key in current_values:
+            assert data.get(key) in response
 
     def test_get_conditions_data_type(self, current_conditions):
         resp = current_conditions.get_conditions()
