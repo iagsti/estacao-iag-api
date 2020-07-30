@@ -20,6 +20,7 @@ class CurrentConditionsRepository:
         self.to_dict()
         self.format_date()
         self.normalize()
+        self.set_visibility()
         self.map_data()
         self.round_data()
         return self.data
