@@ -3,20 +3,21 @@ from estacao.exceptions.nocontent import abort, NoContentException
 from flask_restful import Resource
 
 
-from estacao.models import Consolidado, Pressao, Users, Umidade
+from estacao.models import Pressao, Users, Umidade
 from estacao.mixins.authentication_mixin import AuthMixin, auth
 from estacao.repositories.temperatura import TemperaturaRepository
 from estacao.repositories.current_conditions import CurrentConditionsRepository
+from estacao.repositories.consolidado import ConsolidadoRepository
 
 
 class ConsolidadoResource(Resource, AuthMixin):
     @auth.login_required
     def get(self, date_from, date_to):
-        date_interval = Consolidado.data.between(date_from, date_to)
-        query = Consolidado.query.filter(date_interval)
-        data = query.all()
+        consolidado = ConsolidadoRepository(date_ini=date_from,
+                                            date_end=date_to)
+        data = consolidado.all()
         return jsonify(
-            {"consolidado": [consolidado.to_dict() for consolidado in data]}
+            {"consolidado": data}
         )
 
 
