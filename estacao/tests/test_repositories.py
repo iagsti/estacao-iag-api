@@ -165,3 +165,10 @@ class TestConsolidadoRepository:
         repository.to_dict()
         assert isinstance(repository.data, list)
 
+    def test_get_consolidado(self, consolidado):
+        repository = ConsolidadoRepository('2018-01-01', '2018-12-12')
+        repository.make_query()
+        repository_values = repository.all()[0]
+        expected = consolidado.query.first().to_dict()
+        expected.pop('id')
+        assert expected == repository_values
