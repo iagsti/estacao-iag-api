@@ -1,5 +1,7 @@
 from sqlalchemy import func
+from flask_sqlalchemy import BaseQuery
 from estacao.repositories.temperatura import TemperaturaRepository
+from estacao.repositories.consolidado import ConsolidadoRepository
 from datetime import datetime
 from estacao.models import Consolidado
 from estacao.normalize import Normalize
@@ -148,3 +150,11 @@ class TestCurrentConditionsRepository:
             'quant_nuvens_altas': data.get('qtda'),
         }
         return current_conditions
+
+
+class TestConsolidadoRepository:
+    def test_make_query(self):
+        repository = ConsolidadoRepository('2018-01-01', '2018-12-12')
+        repository.make_query()
+        assert isinstance(repository.query, BaseQuery)
+
