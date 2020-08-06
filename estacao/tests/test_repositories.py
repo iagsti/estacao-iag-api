@@ -158,3 +158,10 @@ class TestConsolidadoRepository:
         repository.make_query()
         assert isinstance(repository.query, BaseQuery)
 
+    def test_to_dict(self):
+        repository = ConsolidadoRepository('2018-01-01', '2018-12-12')
+        repository.make_query()
+        repository.set_data()
+        repository.to_dict()
+        assert isinstance(repository.data, list)
+
