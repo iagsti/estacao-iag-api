@@ -1,6 +1,8 @@
 from estacao.models import Consolidado
 from estacao.normalize import Normalize
 
+FLOAT_ROUND = 2
+
 
 class ConsolidadoRepository:
     def __init__(self, date_ini, date_end):
@@ -62,7 +64,7 @@ class ConsolidadoRepository:
             pressao = item.get('pressao')
             temp_bar = item.get('temp_bar')
             pressao_hpa = normalize.trans_p(pressao, temp_bar)
-            item['pressao_hpa'] = pressao_hpa
+            item['pressao_hpa'] = round(pressao_hpa, FLOAT_ROUND)
 
     def set_date(self):
         for row in self.data:
