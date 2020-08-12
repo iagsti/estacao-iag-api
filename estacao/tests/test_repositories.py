@@ -171,7 +171,8 @@ class TestConsolidadoRepository:
         repository_values = repository.all()[0]
         expected = consolidado.query.first().to_dict()
         expected.pop('id')
-        assert expected == repository_values
+        for key in expected.keys():
+            assert expected.get(key) == repository_values.get(key)
 
     def test_set_hpa(self):
         repository = ConsolidadoRepository('2018-01-01', '2018-12-12')
