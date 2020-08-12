@@ -12,6 +12,7 @@ class ConsolidadoRepository:
         self.make_query()
         self.set_data()
         self.to_dict()
+        self.set_pressao_hpa()
         self.set_date()
         return self.data
 
