@@ -1,4 +1,7 @@
 from estacao.models import Consolidado
+from estacao.normalize import Normalize
+
+FLOAT_ROUND = 2
 
 
 class ConsolidadoRepository:
@@ -11,6 +14,7 @@ class ConsolidadoRepository:
         self.make_query()
         self.set_data()
         self.to_dict()
+        self.set_pressao_hpa()
         self.set_date()
         return self.data
 
@@ -52,6 +56,15 @@ class ConsolidadoRepository:
             dict_key = keys[item]
             data_dict[dict_key] = data[item]
         return data_dict
+
+    def set_pressao_hpa(self):
+        data = getattr(self, 'data')
+        normalize = Normalize()
+        for item in data:
+            pressao = item.get('pressao')
+            temp_bar = item.get('temp_bar')
+            pressao_hpa = normalize.trans_p(pressao, temp_bar)
+            item['pressao_hpa'] = round(pressao_hpa, FLOAT_ROUND)
 
     def set_date(self):
         for row in self.data:
